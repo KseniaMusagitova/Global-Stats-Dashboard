@@ -27,7 +27,7 @@ app.layout = html.Div([
 ])
 
 # Define the callback function for updating the graph, info, and table
-@callback(
+@app.callback(
     [Output('graph-content', 'figure'),
      Output('selected-point-info', 'children'),
      Output('table-content', 'data'),
@@ -36,11 +36,14 @@ app.layout = html.Div([
      Input('graph-content', 'clickData')]
 )
 def update_graph_and_display_info(selected_country, click_data):
+
+    global df
+    
     # Filter the dataset based on the selected country
     dff = df[df['country'] == selected_country]
     
     # Create a line plot using Plotly Express
-    fig = px.line(dff, x='year', y='pop')
+    fig = px.line(dff, x='year', y='pop', title=f'Population Over Time - {selected_country}')
 
     # Default information text
     info_text = "Click on a point to see information."
@@ -62,4 +65,4 @@ def update_graph_and_display_info(selected_country, click_data):
 
 # Run the app if this script is executed
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run_server(debug=True)
